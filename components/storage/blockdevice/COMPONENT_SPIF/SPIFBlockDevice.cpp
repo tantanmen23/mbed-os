@@ -224,7 +224,14 @@ int SPIFBlockDevice::init()
 
     if (_device_size_bytes > (1 << 24)) {
         tr_debug("Size is bigger than 16MB and thus address does not fit in 3 byte, switch to 4 byte address mode");
-        _spi_send_general_command(SPIF_4BEN, SPI_NO_ADDRESS_COMMAND, NULL, 0, NULL, 0);
+	    if (vendor_device_ids[0] == 0x01) {
+            uint8_t br_register[1];
+            _spi_send_general_command(0x16, SPI_NO_ADDRESS_COMMAND, NULL, 0, (char *)br_register, 1);
+            br_register[0] |= (1 << 7); 
+            _spi_send_general_command(0x17, SPI_NO_ADDRESS_COMMAND, (char *)br_register, 1, NULL, 0);
+        } else {
+            _spi_send_general_command(SPIF_4BEN, SPI_NO_ADDRESS_COMMAND, NULL, 0, NULL, 0);
+        }
         _address_size = SPIF_ADDR_SIZE_4_BYTES;
     }
 
