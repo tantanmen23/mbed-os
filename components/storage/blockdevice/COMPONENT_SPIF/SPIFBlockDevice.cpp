@@ -76,7 +76,7 @@ using namespace mbed;
 #define ERASE_BITMASK_NONE  0x00
 #define ERASE_BITMASK_ALL   0x0F
 
-#define IS_MEM_READY_MAX_RETRIES 10000
+#define IS_MEM_READY_MAX_RETRIES 100
 
 enum spif_default_instructions {
     SPIF_NOP = 0x00, // No operation
